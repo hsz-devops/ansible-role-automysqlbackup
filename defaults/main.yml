@@ -1,0 +1,98 @@
+---
+# defaults file for automysqlbackup
+
+# src for the install [package | manual]
+automysqlbackup_src: 'manual'
+
+automysqlbackup_repo: 'git@github.com:Blue-Bag/automysqlbackup.git'
+automysqlbackup_repo_branch: 'master'
+automysqlbackup_folder: '/etc/automysqlbackup'
+automysqlbackup_scripts_folder: '/var/backups/scripts'
+
+# user / group for folder ownership
+automysqlbackup_user:  'root'
+automysqlbackup_group:  'root'
+automysqlbackup_binpath: '/usr/local/bin/automysqlbackup'
+
+automysqlbackup_dump_user_privileges:
+  - '*.*:SELECT,RELOAD,SHOW DATABASES,LOCK TABLES'
+
+#=============================Automysql backup config vars
+
+#============================= common to version 2 & 3
+# user / group for db actions
+#automysqlbackup_dump_user:  'root'
+#automysqlbackup_dump_user_pword:
+
+
+automysqlbackup_dump_host: localhost
+automysqlbackup_dump_host_friendly: "{{ inventory_hostname}}"
+
+
+automysqlbackup_dbnames: "()"
+  #`mysql --defaults-file=/etc/mysql/debian.cnf --execute="SHOW DATABASES" | awk '{print $1}' | grep -v ^Database$ | grep -v ^mysql$ | grep -v ^performance_schema$ | grep -v ^information_schema$ | tr \\\r\\\n ,\ `
+automysqlbackup_dir: '/var/backups/db'
+
+#automysqlbackup_table_exclude:
+#  - '*.*cache*'
+#  - '*.*watchdog'
+automysqlbackup_db_exclude:
+  - 'information_schema'
+  - 'performance_schema'
+
+automysqlbackup_create_db: 'no'
+automysqlbackup_sepdir: 'yes'
+automysqlbackup_doweekly: '5'
+automysqlbackup_comp: 'gzip'
+automysqlbackup_commcomp: 'no'
+automysqlbackup_latest: 'yes'
+
+automysqlbackup_task_folder: './templates'
+
+automysqlbackup_prebackup: { src: 'pretask.sh.j2', dest: 'pretask.sh' }
+automysqlbackup_postbackup: { src: 'posttask.sh.j2', dest: 'posttask.sh' }
+
+
+
+# - log   : send only log file
+# - files : send log file and sql files as attachments (see docs)
+# - stdout : will simply output the log to the screen if run manually.
+# - quiet : Only send logs if an error occurs to the MAILADDR.
+automysqlbackup_mailcontent: 'stdout'
+automysqlbackup_mail_maxattsize: '4000'
+automysqlbackup_mail_address: 'root'
+
+#============================= version 2 specific
+automysqlbackup_routines: '# ROUTINES=yes'
+
+#============================= version 3 specific
+
+automysqlbackup_multicore: 'yes'
+automysqlbackup_multicore_threads: '2'
+
+automysqlbackup_monthlynames: '()'
+#
+automysqlbackup_domonthly: '01'
+automysqlbackup_rotationdaily: '6'
+automysqlbackup_rotationweekly: '35'
+automysqlbackup_rotationmonthly: '150'
+
+automysqlbackup_dump_port: '3306'
+automysqlbackup_dump_usessl: 'no'
+automysqlbackup_dump_socket: ''
+automysqlbackup_dump_max_allowed_packet: ''
+automysqlbackup_dump_single_transaction: 'no'
+automysqlbackup_dump_full_schema: 'yes'
+automysqlbackup_dump_dbstatus: 'yes'
+
+automysqlbackup_dump_latest_clean_filenames: 'yes'
+automysqlbackup_dump_differential: 'no'
+
+automysqlbackup_localfiles: '()'
+
+
+automysqlbackup_encrypt:  'no'
+automysqlbackup_encrypt_pwd: 'password0123'
+
+automysqlbackup_umask: 'umask 0077'
+automysqlbackup_dryrun: '0'

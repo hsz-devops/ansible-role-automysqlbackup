@@ -1,0 +1,95 @@
+---
+
+#
+# see http://stackoverflow.com/questions/16444306/ansible-idempotent-mysql-installation-playbook
+
+- name: MySQL | install mysql packages
+  apt: name={{ item }} state=installed
+  sudo: true
+  with_items:
+   - python-mysqldb
+  tags:
+    - automysqlbackup
+
+# - name: Set fact for mysqldb mysqlbackup
+#   shell: grep user /etc/mysql/debian.cnf | tail -n 1 | cut -d"=" -f2 | awk '{print $1}'
+#   register: automysqlbackup_dump_user
+#   when: automysqlbackup_dump_user is not defined
+#   sudo: true
+#   tags:
+#     - automysqlbackup
+
+# - name: Set fact for mysqldb mysqlbackup user pword
+#   shell: grep password /etc/mysql/debian.cnf | tail -n 1 | cut -d"=" -f2 | awk '{print $1}'
+#   register: automysqlbackup_dump_user_pword
+#   when: automysqlbackup_dump_user_pword is not defined
+#   sudo: true
+#   tags:
+#     - automysqlbackup
+
+- name: Install from Package manager if requested
+  include: packagemanager.yml
+  when: automysqlbackup_src == 'package'
+  tags:
+    - automysqlbackup
+
+- name: Install manually if requested
+  include: manual.yml
+  when: automysqlbackup_src == 'manual'
+  tags:
+    - automysqlbackup
+
+
+# see http://stackoverflow.com/questions/22958443/how-to-grant-mysql-server-administration-privileges-super-reload-with-ansi
+#- name: MySQL | create backup user
+#  mysql_user: name={{ mysqlbackup_user }} password={{ mysqlbackup_user_pword }} priv=*{{ mysqlbacckup_user_privileges }} host='locahost' state=present login_password={{ mysql_root_password }} login_user=root
+#  tags:
+#    - automysqlbackup
+
+# pass priv in as a variable to be idempotent
+# see http://stackoverflow.com/questions/22958443/how-to-grant-mysql-server-administration-privileges-super-reload-with-ansi
+
+
+- name: MySQL | create backup user
+  mysql_user:
+    user: "{{ automysqlbackup_dump_user }}"
+    password: "{{ automysqlbackup_dump_user_pword }}"
+    state: present
+    append_privs: yes
+    priv: "{{ automysqlbackup_dump_user_privileges|join('/') }}"
+    host: "{{ automysqlbackup_dump_host }}"
+  sudo: true
+  when: automysqlbackup_dump_user_pword is defined and automysqlbackup_dump_user is defined
+  tags:
+   - automysqlbackup
+
+
+- name: Create Backups scripts folder
+  file:
+    path: "{{ automysqlbackup_scripts_folder }}"
+    state: directory
+    owner: "{{ automysqlbackup_user }}"
+    group: "{{ automysqlbackup_group }}"
+    mode: 0775
+    recurse: no
+  sudo: true
+  tags: [automysqlbackup]
+
+- name:  Put up post and pre tasks
+  template:
+    src: "{{ automysqlbackup_task_folder }}/{{ item.src }}"
+    dest: "{{ automysqlbackup_scripts_folder }}/{{ item.dest }}"
+    backup: yes
+    mode: 0750
+    owner: "{{ automysqlbackup_user }}"
+    group: "{{ automysqlbackup_group }}"
+  with_items:
+     - "{{ automysqlbackup_prebackup }}"
+     - "{{ automysqlbackup_postbackup }}"
+  sudo: true
+  tags: [automysqlbackup]
+
+
+
+
+

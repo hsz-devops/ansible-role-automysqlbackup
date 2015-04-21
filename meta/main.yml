@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: George Boobyer
+  description: Automysqlbackup role
+  company: Blue-Bag
+  license: license (BSD)
+  min_ansible_version: 1.2
+
+  platforms:
+    - name: Debian
+  versions:
+   - squeeze
+   - wheezy
+  
+  categories:
+    - database
+    - database:sql
+  
