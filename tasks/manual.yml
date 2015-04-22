@@ -1,6 +1,6 @@
 ---
 
-# To install it manually (the hard way).
+# To install it manually.
 # 1. Create the /etc/automysqlbackup directory.
 # 2. Copy in the automysqlbackup.conf file.
 # 3. Copy the automysqlbackup file to /usr/local/bin and make executable.
@@ -40,7 +40,7 @@
 - name:  Set the configuration
   template:
     src: automysqlbackup_v3.conf.j2
-    dest: /etc/automysqlbackup/automysqlbackup.conf
+    dest: "{{ automysqlbackup_folder }}/automysqlbackup.conf
     backup: yes
     mode: 0640
     owner: "{{ automysqlbackup_user }}"
@@ -48,7 +48,10 @@
   sudo: true
   tags: [automysqlbackup]
 
-- name: MySQL | cronjob for automysqlbackup at 4:23 am each day
-  cron: name="Backup DB" hour="4" minute="23" job="{{ automysqlbackup_binpath }} > /dev/null"
-  sudo: true
+  - name: cronjob for automysqlbackup each day
+  cron:
+    name: "Automysqlbackup - Backup DB"
+    hour: "{{ automysqlbackup_cron_hour }}"
+    minute: "{{ automysqlbackup_cron_minute }}"
+    job: "{{ automysqlbackup_binpath }} > /dev/null"
   tags: [automysqlbackup]
