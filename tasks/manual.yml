@@ -7,7 +7,7 @@
 # 4. cp /etc/automysqlbackup/automysqlbackup.conf /etc/automysqlbackup/myserver.conf
 # 5. Edit the /etc/automysqlbackup/myserver.conf file to customise your settings.
 
-- name: Create the automysqlbackup directory
+- name: Manual | Create the automysqlbackup directory
   file:
     path: "{{ automysqlbackup_folder }}"
     state: directory
@@ -18,7 +18,7 @@
   sudo: true
   tags: [automysqlbackup]
 
-- name: Get automysqlbackup from github
+- name: Manual | Get automysqlbackup from github
   git:
     repo: "{{ automysqlbackup_repo }}"
     dest: "{{ automysqlbackup_folder }}"
@@ -28,7 +28,7 @@
     update: no
   tags: [automysqlbackup]
 
-- name:  Link the automysqlbackup file to bin
+- name: Manual | Link the automysqlbackup file to bin
   file:
     state: link
     src: "{{ automysqlbackup_folder }}/automysqlbackup"
@@ -37,7 +37,7 @@
   sudo: true
   tags: [automysqlbackup]
 
-- name:  Set the configuration
+- name: Manual | Set the configuration
   template:
     src: automysqlbackup_v3.conf.j2
     dest: "{{ automysqlbackup_folder }}/automysqlbackup.conf"
@@ -48,7 +48,7 @@
   sudo: true
   tags: [automysqlbackup]
 
-- name: cronjob for automysqlbackup each day
+- name: Manual | Automysqlbackup daily cronjob for backup
   cron:
     name: "Automysqlbackup - Backup DB"
     hour: "{{ automysqlbackup_cron_hour }}"

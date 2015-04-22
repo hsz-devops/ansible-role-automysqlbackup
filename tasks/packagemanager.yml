@@ -12,7 +12,7 @@
 #  ./usr/sbin/automysqlbackup - the script itself
 #  ./var/lib/automysqlbackup
 
-- name: MySQL | automysqlbackup install
+- name: Package | Automysqlbackup install
   apt:
     name: automysqlbackup
     state: installed
@@ -20,7 +20,7 @@
   tags:
     - automysqlbackup
 
-- name: MySQL | Set automysql backup cfg
+- name: Package | Automysqlbackup set backup cfg
   template:
     src: automysqlbackup_v2.conf.j2
     dest: /etc/default/automysqlbackup
@@ -29,7 +29,7 @@
    - automysqlbackup
 
 
-- name: MySQL | cronjob for automysqlbackup each day
+- name: Package | Automysqlbackup daily cronjob for backup
   cron:
     name: "Automysqlbackup - Backup DB"
     hour: "{{ automysqlbackup_cron_hour }}"
