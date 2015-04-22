@@ -39,16 +39,8 @@
   tags:
     - automysqlbackup
 
-
-# see http://stackoverflow.com/questions/22958443/how-to-grant-mysql-server-administration-privileges-super-reload-with-ansi
-#- name: MySQL | create backup user
-#  mysql_user: name={{ mysqlbackup_user }} password={{ mysqlbackup_user_pword }} priv=*{{ mysqlbacckup_user_privileges }} host='locahost' state=present login_password={{ mysql_root_password }} login_user=root
-#  tags:
-#    - automysqlbackup
-
 # pass priv in as a variable to be idempotent
 # see http://stackoverflow.com/questions/22958443/how-to-grant-mysql-server-administration-privileges-super-reload-with-ansi
-
 
 - name: MySQL | create backup user
   mysql_user:
@@ -64,14 +56,17 @@
    - automysqlbackup
 
 
-- name: Create Backups scripts folder
+- name: Create Backups folders
   file:
-    path: "{{ automysqlbackup_scripts_folder }}"
+    path: "{{ item }}"
     state: directory
     owner: "{{ automysqlbackup_user }}"
     group: "{{ automysqlbackup_group }}"
     mode: 0775
-    recurse: no
+    recurse: yes
+  with_items:
+     - "{{ automysqlbackup_dir }}"
+     - "{{ automysqlbackup_scripts_folder }}"
   sudo: true
   tags: [automysqlbackup]
 
