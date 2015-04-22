@@ -17,6 +17,9 @@ automysqlbackup_binpath: '/usr/local/bin/automysqlbackup'
 automysqlbackup_dump_user_privileges:
   - '*.*:SELECT,RELOAD,SHOW DATABASES,LOCK TABLES'
 
+automysqlbackup_cron_hour: "4"
+automysqlbackup_cron_minute: "23"
+
 #=============================Automysql backup config vars
 
 #============================= common to version 2 & 3
