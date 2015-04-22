@@ -11,8 +11,7 @@ galaxy_info:
   versions:
    - squeeze
    - wheezy
-  
+
   categories:
     - database
     - database:sql
-  
