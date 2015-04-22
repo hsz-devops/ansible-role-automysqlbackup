@@ -48,7 +48,7 @@
   sudo: true
   tags: [automysqlbackup]
 
-  - name: cronjob for automysqlbackup each day
+- name: cronjob for automysqlbackup each day
   cron:
     name: "Automysqlbackup - Backup DB"
     hour: "{{ automysqlbackup_cron_hour }}"
