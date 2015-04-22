@@ -40,7 +40,7 @@
 - name:  Set the configuration
   template:
     src: automysqlbackup_v3.conf.j2
-    dest: "{{ automysqlbackup_folder }}/automysqlbackup.conf
+    dest: "{{ automysqlbackup_folder }}/automysqlbackup.conf"
     backup: yes
     mode: 0640
     owner: "{{ automysqlbackup_user }}"
