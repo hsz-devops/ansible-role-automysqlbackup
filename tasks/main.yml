@@ -63,7 +63,7 @@
     owner: "{{ automysqlbackup_user }}"
     group: "{{ automysqlbackup_group }}"
     mode: 0775
-    recurse: yes
+    recurse: no
   with_items:
      - "{{ automysqlbackup_dir }}"
      - "{{ automysqlbackup_scripts_folder }}"
@@ -81,7 +81,6 @@
   with_items:
      - "{{ automysqlbackup_prebackup }}"
      - "{{ automysqlbackup_postbackup }}"
-  sudo: true
   tags: [automysqlbackup]
 
 

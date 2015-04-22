@@ -42,6 +42,7 @@ automysqlbackup_dir: '/var/backups/db'
 automysqlbackup_db_exclude:
   - 'information_schema'
   - 'performance_schema'
+  - 'mysql'
 
 automysqlbackup_create_db: 'no'
 automysqlbackup_sepdir: 'yes'
