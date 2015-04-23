@@ -15,7 +15,7 @@ automysqlbackup_group:  'root'
 automysqlbackup_binpath: '/usr/local/bin/automysqlbackup'
 
 automysqlbackup_dump_user_privileges:
-  - '*.*:SELECT,RELOAD,SHOW DATABASES,LOCK TABLES'
+  - '*.*:SELECT,RELOAD,SHOW DATABASES,LOCK TABLES,EVENT'
 
 automysqlbackup_cron_hour: "4"
 automysqlbackup_cron_minute: "23"
