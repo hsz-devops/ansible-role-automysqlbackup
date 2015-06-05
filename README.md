@@ -1,4 +1,4 @@
-Role: Automysqlbackup set up
+ Role: Automysqlbackup set up
 ========
 
 Install Automysqlbackup Role and configure
