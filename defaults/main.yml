@@ -51,6 +51,7 @@ automysqlbackup_comp: 'gzip'
 automysqlbackup_commcomp: 'no'
 automysqlbackup_latest: 'yes'
 
+# folder source for the pre and post tasks
 automysqlbackup_task_folder: './templates'
 
 automysqlbackup_prebackup: { src: 'pretask.sh.j2', dest: 'pretask.sh' }
