@@ -28,12 +28,12 @@
   tags:
    - automysqlbackup
 
-
-- name: Package | Automysqlbackup daily cronjob for backup
-  cron:
-    name: "Automysqlbackup - Backup DB"
-    hour: "{{ automysqlbackup_cron_hour }}"
-    minute: "{{ automysqlbackup_cron_minute }}"
-    job: "{{ automysqlbackup_binpath }} > /dev/null"
-  tags:
-    - automysqlbackup
+# created by package manager
+# - name: Package | Automysqlbackup daily cronjob for backup
+#   cron:
+#     name: "Automysqlbackup - Backup DB"
+#     hour: "{{ automysqlbackup_cron_hour }}"
+#     minute: "{{ automysqlbackup_cron_minute }}"
+#     job: "{{ automysqlbackup_binpath }} > /dev/null"
+#   tags:
+#     - automysqlbackup
