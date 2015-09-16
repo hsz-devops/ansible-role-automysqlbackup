@@ -26,6 +26,7 @@
     accept_hostkey: "yes"
     force: no
     update: no
+  sudo: true
   tags: [automysqlbackup]
 
 - name: Manual | Link the automysqlbackup file to bin
