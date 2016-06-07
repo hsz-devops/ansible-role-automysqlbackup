@@ -16,7 +16,7 @@
   apt:
     name: automysqlbackup
     state: installed
-  sudo: true
+  become: true
   tags:
     - automysqlbackup
 

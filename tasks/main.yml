@@ -5,7 +5,7 @@
 
 - name: Install MySQL python packages
   apt: name={{ item }} state=installed
-  sudo: true
+  become: true
   with_items:
    - python-mysqldb
   tags:
@@ -15,7 +15,7 @@
 #   shell: grep user /etc/mysql/debian.cnf | tail -n 1 | cut -d"=" -f2 | awk '{print $1}'
 #   register: automysqlbackup_dump_user
 #   when: automysqlbackup_dump_user is not defined
-#   sudo: true
+#   become: true
 #   tags:
 #     - automysqlbackup
 
@@ -23,7 +23,7 @@
 #   shell: grep password /etc/mysql/debian.cnf | tail -n 1 | cut -d"=" -f2 | awk '{print $1}'
 #   register: automysqlbackup_dump_user_pword
 #   when: automysqlbackup_dump_user_pword is not defined
-#   sudo: true
+#   become: true
 #   tags:
 #     - automysqlbackup
 
@@ -50,7 +50,7 @@
     append_privs: yes
     priv: "{{ automysqlbackup_dump_user_privileges|join('/') }}"
     host: "{{ automysqlbackup_dump_host }}"
-  sudo: true
+  become: true
   when: automysqlbackup_dump_user_pword is defined and automysqlbackup_dump_user is defined
   tags:
    - automysqlbackup
@@ -67,7 +67,7 @@
   with_items:
      - "{{ automysqlbackup_dir }}"
      - "{{ automysqlbackup_scripts_folder }}"
-  sudo: true
+  become: true
   tags: [automysqlbackup]
 
 - name:  Put up post and pre tasks

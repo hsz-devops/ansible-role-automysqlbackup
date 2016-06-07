@@ -15,7 +15,7 @@
     group: "{{ automysqlbackup_group }}"
     mode: 0775
     recurse: no
-  sudo: true
+  become: true
   tags: [automysqlbackup]
 
 - name: Manual | Get automysqlbackup from github
@@ -26,7 +26,7 @@
     accept_hostkey: "yes"
     force: no
     update: no
-  sudo: true
+  become: true
   tags: [automysqlbackup]
 
 - name: Manual | Link the automysqlbackup file to bin
@@ -35,7 +35,7 @@
     src: "{{ automysqlbackup_folder }}/automysqlbackup"
     dest: "{{ automysqlbackup_binpath }}"
     mode: 0750
-  sudo: true
+  become: true
   tags: [automysqlbackup]
 
 - name: Manual | Set the configuration
@@ -46,7 +46,7 @@
     mode: 0640
     owner: "{{ automysqlbackup_user }}"
     group: "{{ automysqlbackup_group }}"
-  sudo: true
+  become: true
   tags: [automysqlbackup]
 
 - name: Manual | Automysqlbackup daily cronjob for backup
@@ -57,5 +57,5 @@
     job: "{{ automysqlbackup_binpath }} > /dev/null"
     cron_file: ansible-
     user: "{{ automysqlbackup_user }}"
-  sudo: true
+  become: true
   tags: [automysqlbackup]
