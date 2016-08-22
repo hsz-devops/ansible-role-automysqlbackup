@@ -55,7 +55,7 @@
     hour: "{{ automysqlbackup_cron_hour }}"
     minute: "{{ automysqlbackup_cron_minute }}"
     job: "{{ automysqlbackup_binpath }} > /dev/null"
-    cron_file: ansible-
+    cron_file: automysqlbackup
     user: "{{ automysqlbackup_user }}"
   become: true
   tags: [automysqlbackup]
