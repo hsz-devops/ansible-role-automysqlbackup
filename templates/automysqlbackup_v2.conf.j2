@@ -60,7 +60,7 @@ MDBNAMES="mysql $DBNAMES"
 DBEXCLUDE="{{ mysqlbackup_db_exclude  | join(' ') }}"
 
 # Include CREATE DATABASE in backup?
-CREATE_DATABASE={{ automysqlbackup_create_db | default('yes') }}
+CREATE_DATABASE={{ automysqlbackup_create_db | default('no') }}
 
 # Separate backup directory and file for each DB? (yes or no)
 SEPDIR={{ automysqlbackup_sepdir | default('yes') }}
