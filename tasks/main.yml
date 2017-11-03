@@ -70,17 +70,15 @@
   become: true
   tags: [automysqlbackup]
 
-- name:  Put up post and pre tasks
+- name:  Put up post and pre tasks and misc files
   template:
-    src: "{{ automysqlbackup_task_folder }}/{{ item.src }}"
-    dest: "{{ automysqlbackup_scripts_folder }}/{{ item.dest }}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     backup: yes
-    mode: 0750
-    owner: "{{ automysqlbackup_user }}"
-    group: "{{ automysqlbackup_group }}"
-  with_items:
-     - "{{ automysqlbackup_prebackup }}"
-     - "{{ automysqlbackup_postbackup }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  with_items: automysqlbackup_miscfiles
   tags: [automysqlbackup]
 
 

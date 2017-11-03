@@ -56,7 +56,23 @@ automysqlbackup_task_folder: 'templates/'
 
 automysqlbackup_prebackup: { src: 'pretask.sh.j2', dest: 'pretask.sh' }
 automysqlbackup_postbackup: { src: 'posttask.sh.j2', dest: 'posttask.sh' }
-
+automysqlbackup_miscfiles:
+  - {
+      name: automysqlbackup pretask,
+      src:  "{{ automysqlbackup_task_folder }}/pretask.sh.j2",
+      dest: "{{ automysqlbackup_scripts_folder }}/pretask.sh",
+      mode: "0750",
+      owner: "{{ automysqlbackup_user }}",
+      group: "{{ automysqlbackup_group }}"
+    }
+  - {
+      name: automysqlbackup posttask,
+      src:  "{{ automysqlbackup_task_folder }}/posttask.sh.j2",
+      dest: "{{ automysqlbackup_scripts_folder }}/posttask.sh",
+      mode: "0750",
+      owner: "{{ automysqlbackup_user }}",
+      group: "{{ automysqlbackup_group }}"
+    }
 
 
 # - log   : send only log file
