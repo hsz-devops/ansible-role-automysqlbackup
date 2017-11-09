@@ -62,7 +62,7 @@
     state: directory
     owner: "{{ automysqlbackup_user }}"
     group: "{{ automysqlbackup_group }}"
-    mode: 2775
+    mode: "2770"
     recurse: no
   with_items:
      - "{{ automysqlbackup_dir }}"
@@ -78,7 +78,7 @@
     mode: "{{ item.mode }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
-  with_items: automysqlbackup_miscfiles
+  with_items: "{{automysqlbackup_miscfiles}}"
   tags: [automysqlbackup]
 
 
