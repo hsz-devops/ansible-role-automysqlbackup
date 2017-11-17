@@ -1,0 +1,10 @@
+---
+- hosts: all
+
+  vars:
+    automysqlbackup_src: 'package'
+    automysqlbackup_dump_user:  'root'
+    automysqlbackup_dump_user_pword: 'password'
+
+  roles:
+    - role_under_test
