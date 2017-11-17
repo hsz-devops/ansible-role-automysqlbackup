@@ -32,7 +32,8 @@ automysqlbackup_dump_host: localhost
 automysqlbackup_dump_host_friendly: "{{ inventory_hostname}}"
 
 # if specifying multiple dbs then use a string like:
-#  "('db1' 'db2')"
+#  "('db1' 'db2')" for v3
+#  "db1 db2"
 automysqlbackup_dbnames: "()"
 
   #`mysql --defaults-file=/etc/mysql/debian.cnf --execute="SHOW DATABASES" | awk '{print $1}' | grep -v ^Database$ | grep -v ^mysql$ | grep -v ^performance_schema$ | grep -v ^information_schema$ | tr \\\r\\\n ,\ `
