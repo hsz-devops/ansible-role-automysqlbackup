@@ -1,6 +1,8 @@
 Role: Automysqlbackup set up
 ============================
 
+[![Build Status](https://travis-ci.org/Blue-Bag/ansible-role-automysqlbackup.svg?branch=master)](https://travis-ci.org/Blue-Bag/ansible-role-automysqlbackup)
+
 Install Automysqlbackup Role and configure.
 
 This role enables you to install and configure Automysqlbackup.
@@ -45,6 +47,11 @@ Typically you only need to supply the following:
 
     automysqlbackup_dir: '/var/backups/db'
 
+Database backups
+------------------------------------------
+
+decrypt backups with:
+openssl enc -aes-256-cbc -d -in fulldatabasename.sql.gz.enc -out fulldatabasename.sql.gz -pass pass:{vaulted}
 
 Example Playbook
 -----------------

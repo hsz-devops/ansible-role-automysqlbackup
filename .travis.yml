@@ -1,0 +1,63 @@
+---
+# We need sudo for some of the Docker commands.
+sudo: required
+
+env:
+  # - distro: centos7
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  # - distro: centos6
+  #   init: /sbin/init
+  #   run_opts: ""
+  # - distro: fedora24
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  # - distro: ubuntu1604
+  #   init: /lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  # - distro: ubuntu1404
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distro: debian8
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+
+# Tell Travis to start Docker when it brings up an environment.
+services:
+  - docker
+
+before_install:
+  # Pull container from Docker Hub.
+  - 'docker pull geerlingguy/docker-${distro}-ansible:latest'
+
+
+script:
+  # Create a random file to store the container ID.
+  - container_id=$(mktemp)
+
+  # Run container detached, with our role mounted inside.
+  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
+
+ # Install dependencies.
+  - 'docker exec "$(cat ${container_id})" ansible-galaxy install -r /etc/ansible/roles/role_under_test/tests/requirements.yml'
+
+  # Ansible syntax check.
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --syntax-check'
+
+
+  # Test the Ansible role.
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --diff'
+
+ # Test role idempotence. - skip whilst mysql role not idempotent
+  # - idempotence=$(mktemp)
+  # - docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml | tee -a ${idempotence}
+  # - >
+  #   tail ${idempotence}
+  #   | grep -q 'changed=0.*failed=0'
+  #   && (echo 'Idempotence test: pass' && exit 0)
+  #   || (echo 'Idempotence test: fail' && exit 1)
+
+
+notifications:
+  slack:
+    secure: XvcVmr2EOWHdaZZFE3LFvmo01hE1KvcIgGNdoTGroUZXst05NhtyXGgPjzdBUkuRJDzGbFfHzZZO99cOK7/Ef9+R5J7hcenb/52Gb7z3V0PyAlL1z0h1EEJxgcbB8oPuDd6y2Jvtw5j4++5izsaKfiqS3B49jYGPzKD77ykPi/OIoGVsq2tSLdBg1bzXyzkTG2hoqEPhAqWquloU5Y8y0ZgVO07Xwhgfe1DldDXwMBtvQtom/nzbmCtRTEc24HReaKxyjK5OxAaSI5yXk1nezqiIwlgi3tOWbOAzOJpyVS+tgAeC7a4w4fFSkIsseQwhnNDyqpsvxeQOup6MbFY/NPnn9mnmO7Onoy7ExHerhK0MylxTpy4jxCA0gVNvyFSKGbkwvJ2J1VByNdhyilcERaxFHBXOQl0QvKyuXJ4QheBIr9lzhZVyFgDV/MggTKtaESUaDL2PJykBw2AF0DEgg1c5mlDQ3oYvFHIgj9tHbCLj6/SIXwJOacD08A2ufq1RpMb4zCbBpORiokApOji4+nk9Aybfu2wWUrkc7t+1DJqAwLhopoJY78Xqp/jX3BhN1npgs5nUq3Gkh+YJVBO9j0WJlDOAdjvzdQ+u92siNvQUDjVemzL9ngbTCQrBsTfrf9ov1cggtuf8I8/Gjvy6HrR78v5adyLoms5F1mLBOng=

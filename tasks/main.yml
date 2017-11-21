@@ -28,13 +28,13 @@
 #     - automysqlbackup
 
 - name: Install from Package manager if requested
-  include: packagemanager.yml
+  include_tasks: packagemanager.yml
   when: automysqlbackup_src == 'package'
   tags:
     - automysqlbackup
 
 - name: Install manually if requested
-  include: manual.yml
+  include_tasks: manual.yml
   when: automysqlbackup_src == 'manual'
   tags:
     - automysqlbackup
@@ -62,7 +62,7 @@
     state: directory
     owner: "{{ automysqlbackup_user }}"
     group: "{{ automysqlbackup_group }}"
-    mode: 2775
+    mode: "2770"
     recurse: no
   with_items:
      - "{{ automysqlbackup_dir }}"
@@ -70,17 +70,15 @@
   become: true
   tags: [automysqlbackup]
 
-- name:  Put up post and pre tasks
+- name:  Put up post and pre tasks and misc files
   template:
-    src: "{{ automysqlbackup_task_folder }}/{{ item.src }}"
-    dest: "{{ automysqlbackup_scripts_folder }}/{{ item.dest }}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     backup: yes
-    mode: 0750
-    owner: "{{ automysqlbackup_user }}"
-    group: "{{ automysqlbackup_group }}"
-  with_items:
-     - "{{ automysqlbackup_prebackup }}"
-     - "{{ automysqlbackup_postbackup }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  with_items: "{{automysqlbackup_miscfiles}}"
   tags: [automysqlbackup]
 
 

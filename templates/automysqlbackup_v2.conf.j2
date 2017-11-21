@@ -7,11 +7,11 @@
 
 # Username to access the MySQL server e.g. dbuser
 #USERNAME=`grep user /etc/mysql/debian.cnf | tail -n 1 | cut -d"=" -f2 | awk '{print $1}'`
-USERNAME="{{ automysqlbackup_user }}"
+USERNAME="{{ automysqlbackup_dump_user }}"
 
 # Username to access the MySQL server e.g. password
 #PASSWORD=`grep password /etc/mysql/debian.cnf | tail -n 1 | cut -d"=" -f2 | awk '{print $1}'`
-PASSWORD="{{ automysqlbackup_user_pword }}"
+PASSWORD="{{ automysqlbackup_dump_user_pword }}"
 
 # Host name (or IP address) of MySQL server e.g localhost
 DBHOST={{ automysqlbackup_dump_host | default('localhost') }}
@@ -57,7 +57,7 @@ MAILADDR="{{ automysqlbackup_mail_address }}"
 MDBNAMES="mysql $DBNAMES"
 
 # List of DBNAMES to EXLUCDE if DBNAMES are set to all (must be in " quotes)
-DBEXCLUDE="{{ mysqlbackup_db_exclude  | join(' ') }}"
+DBEXCLUDE="({% for db in automysqlbackup_db_exclude %}'{{ db }}' {% endfor %})"
 
 # Include CREATE DATABASE in backup?
 CREATE_DATABASE={{ automysqlbackup_create_db | default('no') }}
