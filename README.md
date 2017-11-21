@@ -1,6 +1,8 @@
 Role: Automysqlbackup set up
 ============================
 
+[![Build Status](https://travis-ci.org/Blue-Bag/ansible-role-automysqlbackup.svg?branch=dev)](https://travis-ci.org/Blue-Bag/ansible-role-automysqlbackup)
+
 Install Automysqlbackup Role and configure.
 
 This role enables you to install and configure Automysqlbackup.
