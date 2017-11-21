@@ -18,4 +18,4 @@ galaxy_info:
     - database
     - database:sql
 
-dependencies: []
+dependencies: [geerlinguy.mysql]
