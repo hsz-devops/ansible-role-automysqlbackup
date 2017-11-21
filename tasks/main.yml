@@ -28,13 +28,13 @@
 #     - automysqlbackup
 
 - name: Install from Package manager if requested
-  include: packagemanager.yml
+  include_tasks: packagemanager.yml
   when: automysqlbackup_src == 'package'
   tags:
     - automysqlbackup
 
 - name: Install manually if requested
-  include: manual.yml
+  include_tasks: manual.yml
   when: automysqlbackup_src == 'manual'
   tags:
     - automysqlbackup
