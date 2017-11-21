@@ -46,7 +46,7 @@
     mode: 0640
     owner: "{{ automysqlbackup_user }}"
     group: "{{ automysqlbackup_group }}"
-  no_log: True
+  no_log: true
   become: true
   tags: [automysqlbackup]
 
