@@ -18,4 +18,5 @@ galaxy_info:
     - database
     - database:sql
 
-dependencies: []
+dependencies:
+  - { role: geerlingguy.mysql }

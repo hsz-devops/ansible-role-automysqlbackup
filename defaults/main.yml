@@ -31,8 +31,11 @@ automysqlbackup_cron_minute: "23"
 automysqlbackup_dump_host: localhost
 automysqlbackup_dump_host_friendly: "{{ inventory_hostname}}"
 
-
+# if specifying multiple dbs then use a string like:
+#  "('db1' 'db2')" for v3
+#  "db1 db2"
 automysqlbackup_dbnames: "()"
+
   #`mysql --defaults-file=/etc/mysql/debian.cnf --execute="SHOW DATABASES" | awk '{print $1}' | grep -v ^Database$ | grep -v ^mysql$ | grep -v ^performance_schema$ | grep -v ^information_schema$ | tr \\\r\\\n ,\ `
 automysqlbackup_dir: '/var/backups/db'
 
@@ -56,7 +59,23 @@ automysqlbackup_task_folder: 'templates/'
 
 automysqlbackup_prebackup: { src: 'pretask.sh.j2', dest: 'pretask.sh' }
 automysqlbackup_postbackup: { src: 'posttask.sh.j2', dest: 'posttask.sh' }
-
+automysqlbackup_miscfiles:
+  - {
+      name: automysqlbackup pretask,
+      src:  "{{ automysqlbackup_task_folder }}/pretask.sh.j2",
+      dest: "{{ automysqlbackup_scripts_folder }}/pretask.sh",
+      mode: "0750",
+      owner: "{{ automysqlbackup_user }}",
+      group: "{{ automysqlbackup_group }}"
+    }
+  - {
+      name: automysqlbackup posttask,
+      src:  "{{ automysqlbackup_task_folder }}/posttask.sh.j2",
+      dest: "{{ automysqlbackup_scripts_folder }}/posttask.sh",
+      mode: "0750",
+      owner: "{{ automysqlbackup_user }}",
+      group: "{{ automysqlbackup_group }}"
+    }
 
 
 # - log   : send only log file
